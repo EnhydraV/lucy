@@ -1,0 +1,14 @@
+{
+    "name": "ahmadshah/lucy",
+    "description": "PHP modsecurity log parser",
+    "require": {
+
+    },
+    "autoload": {
+        "psr-4": {
+            "Lucy\\": "src/"
+        }
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
+}
