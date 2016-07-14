@@ -4,24 +4,49 @@ namespace Lucy;
 
 class Parser
 {
-    protected $source;
+    protected $string;
+
+    protected $block;
 
     protected $blocks = [
         'A' => Blocks\Basic::class
     ];
 
-    public function __construct($source)
+    protected $parsed = [];
+
+    public function setBlock($block)
     {
-        $this->source = $source;
+        $blockClass = $this->blocks[$block];
+        $this->block = new $blockClass;
+
+        return $this;
     }
 
-    public function getRawSource()
+    public function getBlock()
     {
-        return $this->source;
+        return $this->block;
     }
 
-    public function parse()
+    public function setString($string)
     {
-        
+        $this->string = $string;
+
+        return $this;
+    }
+
+    public function getParsedContent()
+    {
+        return $this->parsed[$this->getBlock()->getBlockId()];
+    }
+
+    public function __call($method, $args)
+    {
+        if ($method === 'parse') {
+            $parsed = call_user_func([$this->getBlock(), 'parse'], $this->string);
+
+            $this->parsed[$parsed->getBlockId()] = $parsed;
+        }
+
+        return $this;
     }
 }
