@@ -22,6 +22,11 @@ class BasicTest extends \PHPUnit_Framework_TestCase
         $this->block = null;
     }
 
+    public function testGetBlockIdMethod()
+    {
+        $this->assertEquals('A', $this->block->getBlockId());
+    }
+
     public function testParseMethod()
     {
         $this->assertInstanceOf('\Lucy\Blocks\Basic', $this->block->parse($this->source));
