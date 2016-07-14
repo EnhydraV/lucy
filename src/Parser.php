@@ -2,7 +2,7 @@
 
 namespace Lucy;
 
-class Parser
+class Parser implements Contracts\ParserInterface
 {
     protected $string;
 
@@ -35,19 +35,29 @@ class Parser
         return $this;
     }
 
-    public function getParsedContent($block = null)
+    public function getString()
+    {
+        return $this->string;
+    }
+
+    public function getContents()
+    {
+        return $this->parsed;
+    }
+
+    public function getBlockContent($block = null)
     {
         if (! is_null($block)) {
-            return $this->parsed[$block];
+            return $this->getContents()[$block];
         }
 
-        return $this->parsed[$this->getBlock()->getBlockId()];
+        return $this->getContents()[$this->getBlock()->getBlockId()];
     }
 
     public function __call($method, $args)
     {
         if ($method === 'parse') {
-            $parsed = call_user_func([$this->getBlock(), 'parse'], $this->string);
+            $parsed = call_user_func([$this->getBlock(), 'parse'], $this->getString());
 
             $this->parsed[$parsed->getBlockId()] = $parsed;
         }

@@ -8,11 +8,13 @@ class BasicTest extends \PHPUnit_Framework_TestCase
 {
     protected $block;
 
+    protected $source;
+
     public function setUp()
     {
-        $source = '[13/Jul/2016:20:40:38 +0800] xcAcAcAcArAtAc4cFciHAfAz 10.10.2.117 61190 127.0.0.1 80';
+        $this->source = '[13/Jul/2016:20:40:38 +0800] xcAcAcAcArAtAc4cFciHAfAz 10.10.2.117 61190 127.0.0.1 80';
 
-        $this->block = new Basic($source);
+        $this->block = new Basic;
     }
 
     public function tearDown()
@@ -22,7 +24,7 @@ class BasicTest extends \PHPUnit_Framework_TestCase
 
     public function testParseMethod()
     {
-        $this->assertInstanceOf('\Lucy\Blocks\Basic', $this->block->parse());
+        $this->assertInstanceOf('\Lucy\Blocks\Basic', $this->block->parse($this->source));
 
         $this->assertEquals(13, $this->block->day);
         $this->assertEquals('07', $this->block->month);
@@ -36,10 +38,5 @@ class BasicTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('61190', $this->block->sourcePort);
         $this->assertEquals('127.0.0.1', $this->block->serverIp);
         $this->assertEquals('80', $this->block->serverPort);
-    }
-
-    public function testGetDateTimeMethod()
-    {
-        $this->assertEquals('2016-07-13 20:40:38', $this->block->getDateTime());
     }
 }

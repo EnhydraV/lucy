@@ -2,7 +2,7 @@
 
 namespace Lucy;
 
-class Document
+class Document implements Contracts\DocumentInterface
 {
     protected $parser;
 
@@ -10,7 +10,7 @@ class Document
 
     protected $sourceFile;
 
-    public function __construct($sourceFile, $parser)
+    public function __construct($sourceFile, Contracts\ParserInterface $parser)
     {
         $this->sourceFile = $sourceFile;
         $this->parser = $parser;
