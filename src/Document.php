@@ -45,11 +45,7 @@ class Document
         preg_match('/(^\-\-[a-z0-9]+\-)(.*)(\-\-)/', $string, $matches);
 
         if (count($matches) > 0) {
-            if ($matches[2] == 'A') {
-                return $matches[2];
-            }
-
-            return;
+            return $matches[2];
         }
 
         return;
