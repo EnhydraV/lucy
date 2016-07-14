@@ -24,7 +24,7 @@ class Document implements Contracts\DocumentInterface
             $line = trim($this->source->fgets());
 
             if (strlen($line) < 1) {
-                break;
+                continue;
             }
 
             $block = $this->checkBlock($line);
