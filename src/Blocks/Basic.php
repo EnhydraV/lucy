@@ -2,7 +2,6 @@
 
 namespace Lucy\Blocks;
 
-use Carbon\Carbon;
 use Lucy\Contracts\BlockInterface;
 use Lucy\Traits\BlockHydratorTrait;
 

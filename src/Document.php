@@ -21,16 +21,18 @@ class Document
         $this->source = new \SplFileObject($this->sourceFile);
 
         while($this->source->valid()) {
-            $line = $this->source->fgets();
+            $line = trim($this->source->fgets());
 
             if (strlen($line) < 1) {
                 break;
             }
 
-            if (! is_null($this->checkBlock($line))) {
-                $this->parser = $this->parser->setBlock($this->checkBlock($line));
+            $block = $this->checkBlock($line);
+
+            if (! is_null($block)) {
+                $this->assignParserBlock($block);
             } else {
-                $this->parser->setString($line)->parse();
+                $this->parser()->setString($line)->parse();
             }
         }
     }
@@ -49,5 +51,17 @@ class Document
         }
 
         return;
+    }
+
+    protected function assignParserBlock($blockName)
+    {
+        $block = $this->parser()->getBlock();
+        if (! $block instanceof \Lucy\Contracts\BlockInterface) {
+            $this->parser()->setBlock($blockName);
+        } else {
+            if ($blockName != $block->getBlockId()) {
+                $this->parser()->setBlock($blockName);
+            }
+        }
     }
 }

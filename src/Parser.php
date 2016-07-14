@@ -9,7 +9,8 @@ class Parser
     protected $block;
 
     protected $blocks = [
-        'A' => Blocks\Basic::class
+        'A' => Blocks\Basic::class,
+        'B' => Blocks\Header::class
     ];
 
     protected $parsed = [];
@@ -34,8 +35,12 @@ class Parser
         return $this;
     }
 
-    public function getParsedContent()
+    public function getParsedContent($block = null)
     {
+        if (! is_null($block)) {
+            return $this->parsed[$block];
+        }
+
         return $this->parsed[$this->getBlock()->getBlockId()];
     }
 
