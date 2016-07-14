@@ -11,6 +11,7 @@ class Parser implements Contracts\ParserInterface
     protected $blocks = [
         'A' => Blocks\Basic::class,
         'B' => Blocks\RequestHeader::class,
+        'E' => Blocks\ResponseBody::class,
         'F' => Blocks\ResponseHeader::class
     ];
 
