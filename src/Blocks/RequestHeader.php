@@ -2,7 +2,7 @@
 
 namespace Lucy\Blocks;
 
-class Header extends AbstractBlock
+class RequestHeader extends AbstractBlock
 {
     protected $block = 'B';
 
@@ -20,9 +20,11 @@ class Header extends AbstractBlock
 
     protected $userAgent;
 
+    protected $cookie;
+
     public function parse($string)
     {
-        $methods = ['method', 'host', 'contentType', 'referer', 'userAgent'];
+        $methods = ['method', 'host', 'contentType', 'referer', 'userAgent', 'cookie'];
         foreach ($methods as $method) {
             call_user_func_array([$this, 'extract'.ucwords($method)], [$string]);
         }
@@ -83,6 +85,17 @@ class Header extends AbstractBlock
         if (count($matches) > 0) {
             $this->hydrate([
                 'userAgent' => $matches[1]
+            ]);
+        }
+    }
+
+    protected function extractCookie($string)
+    {
+        preg_match('/^Cookie:\s(.+)/i', $string, $matches);
+
+        if (count($matches) > 0) {
+            $this->hydrate([
+                'cookie' => $matches[1]
             ]);
         }
     }
