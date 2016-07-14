@@ -29,6 +29,10 @@ class Document implements Contracts\DocumentInterface
 
             $block = $this->checkBlock($line);
 
+            if ($block === 'Z') {
+                break;
+            }
+
             if (! is_null($block)) {
                 $this->assignParserBlock($block);
             } else {
