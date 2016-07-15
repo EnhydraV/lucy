@@ -84,7 +84,7 @@ class RequestHeader extends AbstractBlock
 
         if (count($matches) > 0) {
             $this->hydrate([
-                'userAgent' => $matches[1]
+                'userAgent' => new UserAgent($matches[1])
             ]);
         }
     }
