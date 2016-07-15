@@ -2,6 +2,8 @@
 
 namespace Lucy\Blocks;
 
+use Lucy\Reader\UserAgent;
+
 class RequestHeader extends AbstractBlock
 {
     protected $block = 'B';
