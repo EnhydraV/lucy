@@ -3,7 +3,7 @@
     "description": "PHP modsecurity log parser",
     "require": {
         "geoip2/geoip2": "~2.0",
-        "nesbot/carbon": "^1.21",
+        "nesbot/carbon": "^2.0",
         "jenssegers/agent": "~v2.3"
     },
     "require-dev": {
