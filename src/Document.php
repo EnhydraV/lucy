@@ -2,25 +2,45 @@
 
 namespace Lucy;
 
+use Lucy\Contracts\ParserInterface;
+
 class Document implements Contracts\DocumentInterface
 {
-    protected $parser;
+    protected $parsers = [];
+
+    protected $parserClass;
 
     protected $source;
 
     protected $sourceFile;
 
-    public function __construct($sourceFile, Contracts\ParserInterface $parser)
+
+    public function __construct($sourceFile, $parserClass)
     {
         $this->sourceFile = $sourceFile;
-        $this->parser = $parser;
+        $this->parserClass = $parserClass;
+        $this->read();
+    }
+
+    /**
+     * @return ParserInterface[]
+     */
+    public function getParsers()
+    {
+        return $this->parsers;
     }
 
     public function read()
     {
         $this->source = new \SplFileObject($this->sourceFile);
+        $newParser = true;
 
-        while($this->source->valid()) {
+        while ($this->source->valid()) {
+            if ($newParser) {
+                $parser = new $this->parserClass();
+                $this->parsers[] = $parser;
+                $newParser = false;
+            }
             $line = trim($this->source->fgets());
 
             if (strlen($line) < 1) {
@@ -30,20 +50,16 @@ class Document implements Contracts\DocumentInterface
             $block = $this->checkBlock($line);
 
             if ($block === 'Z') {
-                break;
+                $newParser=true;
+                continue;
             }
 
-            if (! is_null($block)) {
-                $this->assignParserBlock($block);
+            if (!is_null($block)) {
+                $this->assignParserBlock($parser, $block);
             } else {
-                $this->parser()->setString($line)->parse();
+                $parser->setString($line)->parse();
             }
         }
-    }
-
-    public function parser()
-    {
-        return $this->parser;
     }
 
     protected function checkBlock($string)
@@ -54,17 +70,17 @@ class Document implements Contracts\DocumentInterface
             return $matches[2];
         }
 
-        return;
+        return null;
     }
 
-    protected function assignParserBlock($blockName)
+    protected function assignParserBlock($parser, $blockName)
     {
-        $block = $this->parser()->getBlock();
-        if (! $block instanceof \Lucy\Contracts\BlockInterface) {
-            $this->parser()->setBlock($blockName);
+        $block = $parser->getBlock();
+        if (!$block instanceof \Lucy\Contracts\BlockInterface) {
+            $parser->setBlock($blockName);
         } else {
             if ($blockName != $block->getBlockId()) {
-                $this->parser()->setBlock($blockName);
+                $parser->setBlock($blockName);
             }
         }
     }
