@@ -36,7 +36,8 @@ class RequestHeader extends AbstractBlock
 
     protected function extractMethod($string)
     {
-        preg_match('/^(GET|POST|HEAD|PUT|DELETE|TRACE|PROPFIND|OPTIONS|CONNECT|PATCH)\s(.+)\s(HTTP\/[01]\.[019])/i', $string, $matches);
+        preg_match('/^(GET|POST|HEAD|PUT|DELETE|TRACE|PROPFIND|OPTIONS|CONNECT|PATCH)\s(.+)\s(HTTP\/[012]\.[019])/i', $string, $matches);
+        dd($matches,$string);
 
         if (count($matches) > 0) {
             $this->hydrate([
