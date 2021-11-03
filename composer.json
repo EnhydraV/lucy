@@ -2,7 +2,7 @@
     "name": "ahmadshah/lucy",
     "description": "PHP modsecurity log parser",
     "require": {
-        "php": "^7.0",
+        "php": ">=7.0",
         "geoip2/geoip2": "^2.0",
         "nesbot/carbon": "^2.0",
         "jenssegers/agent": "^v2.6"
